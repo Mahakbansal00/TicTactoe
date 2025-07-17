@@ -5,7 +5,7 @@ let msgcon = document.querySelector(".msgcon");
 let msg = document.querySelector("#msg");
 let turno = true;
 
-let winPattrens = [
+let winPatterns = [
     [0, 1, 2],
     [0, 3, 6],
     [0, 4, 8],
@@ -25,15 +25,19 @@ const resetGame = () => {
 boxes.forEach((box) => {
     box.addEventListener('click', () => {
         if (box.innerText !== "") return;
+        box.classList.remove("x", "o");
 
         if (turno) {
             box.innerText = "O";
+            box.classList.add("o");
         } else {
             box.innerText = "X";
+            box.classList.add("x");
         }
+
         box.disabled = true;
         turno = !turno;
-        checkwinner();
+        checkWinner();
     });
 });
 
@@ -47,6 +51,7 @@ const enabledbtn = () => {
     for (let box of boxes) {
         box.disabled = false;
         box.innerText = "";
+        box.classList.remove("x", "o");
     }
 };
 
@@ -56,11 +61,11 @@ const showWinner = (winner) => {
     disabledbtn();
 };
 
-const checkwinner = () => {
-    for (let pattren of winPattrens) {
-        let pos1val = boxes[pattren[0]].innerText;
-        let pos2val = boxes[pattren[1]].innerText;
-        let pos3val = boxes[pattren[2]].innerText;
+const checkWinner = () => {
+    for (let pattern of winPatterns) {
+        let pos1val = boxes[pattern[0]].innerText;
+        let pos2val = boxes[pattern[1]].innerText;
+        let pos3val = boxes[pattern[2]].innerText;
 
         if (pos1val !== "" && pos2val !== "" && pos3val !== "") {
             if (pos1val === pos2val && pos2val === pos3val) {
@@ -68,6 +73,18 @@ const checkwinner = () => {
                 return;
             }
         }
+    }
+
+    // Optional: Check for Draw
+    let isDraw = true;
+    boxes.forEach((box) => {
+        if (box.innerText === "") {
+            isDraw = false;
+        }
+    });
+    if (isDraw) {
+        msg.innerText = "It's a Draw!";
+        msgcon.classList.remove("hide");
     }
 };
 
