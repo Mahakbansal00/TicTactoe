@@ -75,7 +75,7 @@ const checkWinner = () => {
         }
     }
 
-    // Optional: Check for Draw
+    // Check for Draw only if no winner
     let isDraw = true;
     boxes.forEach((box) => {
         if (box.innerText === "") {
